@@ -19,6 +19,13 @@ var daveIcon = L.icon({
     popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
 });
 
+var medicalIcon = L.icon({
+    iconUrl: 'firstaidicon.png',
+
+    iconSize:	  [38, 45],
+});
+
+
 function onLocationFound(e) {
 	console.log(e);
 	var radius = e.accuracy / 2;
@@ -39,15 +46,23 @@ function onLocationError(e) {
 
 map.on('locationerror', onLocationError);
 
-// function onMapClick(e) {
+//function onMapClick(e) {
+//	console.log(e.latlng);
 // 	L.marker(e.latlng, {icon: daveIcon}).addTo(map);
-// }
+//}
 
 // map.on('click', onMapClick);
+
+// outside lands festival map overlay onto actual map
 var imageURL = './OSLMAP_burned.png',
 	imageBounds = [[37.766152, -122.496683],[37.771037, -122.481465]];
 
 L.imageOverlay(imageURL,imageBounds).addTo(map);
+
+// medical tent markers added to the map
+L.marker([37.76964190906794, -122.48454988002779], {icon: medicalIcon}).addTo(map).bindPopup("Medical tent");
+L.marker([37.768429126623694, -122.48832643032074], {icon: medicalIcon}).addTo(map).bindPopup("Medical tent");
+L.marker([37.76843336715642, -122.49416828155519], {icon: medicalIcon}).addTo(map).bindPopup("Medical tent");
 
 firebase.on("child_added", function(snapshot, prevChildKey) {
   // Get latitude and longitude from the cloud.

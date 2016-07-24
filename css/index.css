@@ -7,6 +7,13 @@
   width: 100%;
 }
 
+#rangerTitle{
+  position: fixed;
+  width: 89%;
+  left: 50%;
+transform: translateX(-50%);
+}
+
 #mapid { 
 	height: 100vh;
   position: absolute;
@@ -18,7 +25,7 @@
 }
 
 #titlething {
-  width: 100%;
+  width: 89%;
   position: relative;
   z-index: 1;
   background-color: rgba(255, 255, 255, 0.8);

@@ -58,7 +58,7 @@ var overlayMaps = {
 	"Water Stations": water_stations
 };
 
-L.control.layers(null, overlayMaps).addTo(map);
+L.control.layers(null, overlayMaps,{position:'topleft'}).addTo(map);
 
 function generateLocation(){ //generates random point within the radius of golden gate park (for testing purposes)
 	var r = 200/111300; // = 100 meters

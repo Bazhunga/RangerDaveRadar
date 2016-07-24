@@ -12,7 +12,7 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 map.locate({setView:true});
 
 var daveIcon = L.icon({
-    iconUrl: 'DanIcon.png',
+    iconUrl: 'daveicon.png',
 
     iconSize:     [38, 45], // size of the icon
     iconAnchor:   [19, 40], // point of the icon which will correspond to marker's location
@@ -22,6 +22,8 @@ var daveIcon = L.icon({
 function onLocationFound(e) {
 	console.log(e);
 	var radius = e.accuracy / 2;
+	console.log("Location");
+	console.log(e);
 
 	// L.marker(e.latlng, {icon: daveIcon}).addTo(map)
  //    		.bindPopup("You are within " + radius + " meters from this point").openPopup();

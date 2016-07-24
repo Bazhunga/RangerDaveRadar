@@ -23,7 +23,13 @@ var daveIcon = L.icon({
 var medicalIcon = L.icon({
     iconUrl: 'firstaidicon.png',
 
-    iconSize:	  [38, 45],
+    iconSize:	  [38, 45]
+});
+
+var waterIcon = L.icon({
+	iconUrl: 'water_drop.png',
+
+	iconSize:     [38, 45]
 });
 
 
@@ -49,9 +55,15 @@ var imageURL = './OSLMAP_burned.png',
 L.imageOverlay(imageURL,imageBounds).addTo(map);
 
 // medical tent markers added to the map
-L.marker([37.76964190906794, -122.48454988002779], {icon: medicalIcon}).addTo(map).bindPopup("Medical tent");
-L.marker([37.768429126623694, -122.48832643032074], {icon: medicalIcon}).addTo(map).bindPopup("Medical tent");
-L.marker([37.76843336715642, -122.49416828155519], {icon: medicalIcon}).addTo(map).bindPopup("Medical tent");
+L.marker([37.76964190906794, -122.48454988002779], {icon: medicalIcon}).addTo(map).bindPopup("Medical Tent");
+L.marker([37.768429126623694, -122.48832643032074], {icon: medicalIcon}).addTo(map).bindPopup("Medical Tent");
+L.marker([37.76843336715642, -122.49416828155519], {icon: medicalIcon}).addTo(map).bindPopup("Medical Tent");
+L.marker([37.766665043925734, -122.49277353286745], {icon:medicalIcon}).addTo(map).bindPopup("Medical Tent");
+
+// water station markers added to the map
+L.marker([37.7677336759695, -122.49194204807283], {icon: waterIcon}).addTo(map).bindPopup("Water Station");
+L.marker([37.76897191283392, -122.49256432056428], {icon: waterIcon}).addTo(map).bindPopup("Water Station");
+L.marker([37.7696546304567, -122.48497366905214], {icon: waterIcon}).addTo(map).bindPopup("Water Station");
 
 $('#alert-btn').click(function(){ //event for when they click the button to drop a pin to their location
 	map.locate({setView:true}); 

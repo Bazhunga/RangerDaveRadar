@@ -20,6 +20,13 @@ var daveIcon = L.icon({
     popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
 });
 
+var medicalIcon = L.icon({
+    iconUrl: 'firstaidicon.png',
+
+    iconSize:	  [38, 45],
+});
+
+
 function onLocationFound(e) {
 	console.log(e);
 	var radius = e.accuracy / 2;
@@ -37,9 +44,14 @@ function onLocationError(e) { //any errors that occur with getting the user's lo
 
 map.on('locationerror', onLocationError);
 
-var imageURL = './OSLMAP_burned.png', //adds the Outside Lands map overlay
+var imageURL = './OSLMAP_burned.png',
 	imageBounds = [[37.766152, -122.496683],[37.771037, -122.481465]];
 L.imageOverlay(imageURL,imageBounds).addTo(map);
+
+// medical tent markers added to the map
+L.marker([37.76964190906794, -122.48454988002779], {icon: medicalIcon}).addTo(map).bindPopup("Medical tent");
+L.marker([37.768429126623694, -122.48832643032074], {icon: medicalIcon}).addTo(map).bindPopup("Medical tent");
+L.marker([37.76843336715642, -122.49416828155519], {icon: medicalIcon}).addTo(map).bindPopup("Medical tent");
 
 $('#alert-btn').click(function(){ //event for when they click the button to drop a pin to their location
 	map.locate({setView:true}); 

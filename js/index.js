@@ -39,3 +39,7 @@ function onMapClick(e) {
 }
 
 map.on('click', onMapClick);
+var imageURL = './OSLMAP_burned.png',
+	imageBounds = [[37.766152, -122.496683],[37.771037, -122.481465]];
+
+L.imageOverlay(imageURL,imageBounds).addTo(map);

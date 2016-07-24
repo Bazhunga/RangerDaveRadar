@@ -1,5 +1,6 @@
 var map = L.map('mapid').setView([37.768611, -122.490113], 16);
 var currLocation;
+var ggPark = L.latLng(37.769358, -122.48816);
 
 var firebase = new Firebase("https://rangerdavesradar.firebaseio.com/");
 firebase.remove();
@@ -23,16 +24,31 @@ var daveIcon = L.icon({
 
 var medicalIcon = L.icon({
     iconUrl: 'firstaidicon.png',
-
     iconSize:	  [38, 45]
 });
 
 var waterIcon = L.icon({
 	iconUrl: 'water_drop.png',
-
 	iconSize:     [38, 45]
 });
 
+function generateLocation(){ //generates random point within the radius of golden gate park (for testing purposes)
+	var r = 200/111300; // = 100 meters
+    var y0 = 37.769358; //lat and long of center of golden gate
+  	var x0 = -122.48816;
+    var u = Math.random();
+  	var v = Math.random();
+  	var w = r * Math.sqrt(u);
+  	var t = 2 * Math.PI * v;
+  	var x = w * Math.cos(t);
+  	var y1 = w * Math.sin(t);
+  	var x1 = x / Math.cos(y0);
+
+	var newY = y0 + y1;
+	var newX = x0 + x1;
+	var newLocation = {lng: newX, lat: newY};
+	return newLocation;
+} //end of generateLocation
 
 function onLocationFound(e) {
 	var radius = e.accuracy / 2;
@@ -64,9 +80,12 @@ L.marker([37.76897191283392, -122.49256432056428], {icon: waterIcon}).addTo(map)
 L.marker([37.7696546304567, -122.48497366905214], {icon: waterIcon}).addTo(map).bindPopup("Water Station");
 
 $('#alert-btn').click(function(){ //event for when they click the button to drop a pin to their location
-	map.locate({setView:true}); 
-    map.on('locationfound', onLocationFound); //locates the user's location again when clicked
-	firebase.push({latLng: currLocation.latlng, objId: 0}); //pushes to the firebase
+	// map.locate({setView:true}); 
+ //    map.on('locationfound', onLocationFound); //locates the user's location again when clicked
+ //====UNCOMMENT THE ABOVE LINES TO DROP A PIN AT OUR CURRENT LOCATION=====//
+ 	var newLocation = generateLocation(); //generates a new location near golden gate park
+ 	map.setView(ggPark, 16);
+	firebase.push({latLng: newLocation, objId: 0}); //pushes to the firebase
 });
 
 firebase.on("child_added", function(snapshot, prevChildKey) { //listener when something is pushed to firebase

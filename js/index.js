@@ -9,7 +9,7 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 	accessToken: 'pk.eyJ1Ijoia2RpZXUiLCJhIjoiY2lxenJld3FjMDJtdmZ4a3F3Mnh4cjd5eCJ9.mjmM-iBez9Zt2tuRoa40bg'
 }).addTo(map);
 
-map.locate({setView:true});
+map.locate({setView:true}); //locates the user's location
 
 var daveIcon = L.icon({
     iconUrl: 'daveicon.png',
@@ -23,17 +23,14 @@ function onLocationFound(e) {
 	console.log(e);
 	var radius = e.accuracy / 2;
 	console.log("Location");
-	console.log(e);
-
-	// L.marker(e.latlng, {icon: daveIcon}).addTo(map)
- //    		.bindPopup("You are within " + radius + " meters from this point").openPopup();
+	console.log(e); //prints out the locaition
  	firebase.push({latLng: e.latlng}); //pushes to the firesbase
-	// L.circle(e.latlng, radius).addTo(map);
+	L.circle(e.latlng, radius).addTo(map); //add an initial circle to the current location of the user
 }
 
 map.on('locationfound', onLocationFound);
 
-function onLocationError(e) {
+function onLocationError(e) { //any errors that occur with getting the user's location
 	alert(e.message);
 }
 
@@ -53,12 +50,5 @@ firebase.on("child_added", function(snapshot, prevChildKey) {
   // Get latitude and longitude from the cloud.
   var newPosition = snapshot.val();
 
-  // Create a google.maps.LatLng object for the position of the marker.
-  // A LatLng object literal (as above) could be used, but the heatmap
-  // in the next step requires a google.maps.LatLng object.
-  // var latLng = new google.maps.LatLng(newPosition.lat, newPosition.lng);
-
-  // var newMarker = L.latLng(newPosition.lat, newPosition.lng);
-  L.marker(newPosition.latLng, {icon: daveIcon}).addTo(map);
   L.circle(newPosition.latLng, radius).addTo(map);
 });

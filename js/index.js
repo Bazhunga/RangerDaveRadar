@@ -35,10 +35,7 @@ var waterIcon = L.icon({
 
 
 function onLocationFound(e) {
-	console.log(e);
 	var radius = e.accuracy / 2;
-	console.log("Location on start up: ");
-	console.log(e); //prints out the locaition
 	L.circle(e.latlng, radius).addTo(map); //add an initial circle to the current location of the user
 	currLocation = e;
 }
@@ -68,26 +65,23 @@ L.marker([37.7696546304567, -122.48497366905214], {icon: waterIcon}).addTo(map).
 
 $('#alert-btn').click(function(){ //event for when they click the button to drop a pin to their location
 	map.locate({setView:true}); 
-    map.on('locationfound', onLocationFound); //locates the user's location on start up
-    console.log(currLocation);
-	firebase.push({latLng: currLocation.latlng}); //pushes to the firebase
+    map.on('locationfound', onLocationFound); //locates the user's location again when clicked
+	firebase.push({latLng: currLocation.latlng, objId: 0}); //pushes to the firebase
 });
 
-firebase.on("child_added", function(snapshot, prevChildKey) { //listener when soemthing is pushed to firebase
-  var newPosition = snapshot.val();
-  console.log(snapshot);
-  var marker = L.marker(newPosition.latLng, {icon: daveIcon}); //adds that icon to the map
-  map.addLayer(marker)
+firebase.on("child_added", function(snapshot, prevChildKey) { //listener when something is pushed to firebase
+	var newPosition = snapshot.val();
+	var key = snapshot.key(); //grabs the key so we can update the id
+	var marker = L.marker(newPosition.latLng, {icon: daveIcon}); //adds that icon to the map
+	var addLayer = map.addLayer(marker); //adds the marker to leaflet map, so now the marker has a leaflet id
+	firebase.child(key).update({objId: marker._leaflet_id}); //updates the object's ID
 });
 
-firebase.on("child_removed", function(oldChildSnapshot){
-	console.log(oldChildSnapshot.val());
-	var deleteMarker = snapshot.val().latLng;
-
-	map.eachLayer(function (layer) {
-		var layerLng = layer._latlng;
-	   if(layerLng.lat == deleteMarker.lat && layerLng.lng == deleteMarker.lng){
-	   		map.removeLayer(layer);
+firebase.on("child_removed", function(oldChildSnapshot){ //listener when something is removed from our database
+	var deleteMarkerId = oldChildSnapshot.val().objId; //saves the deleted object's ID
+	map.eachLayer(function (layer) { //loops through each layer
+	   if(layer._leaflet_id == deleteMarkerId){
+	   		map.removeLayer(layer); //removes that layer (marker) when 
 	   }
 	});
 });

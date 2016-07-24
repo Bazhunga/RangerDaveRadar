@@ -2,6 +2,7 @@ var map = L.map('mapid').setView([37.768611, -122.490113], 16);
 var currLocation;
 
 var firebase = new Firebase("https://rangerdavesradar.firebaseio.com/");
+firebase.remove();
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -50,5 +51,19 @@ $('#alert-btn').click(function(){ //event for when they click the button to drop
 
 firebase.on("child_added", function(snapshot, prevChildKey) { //listener when soemthing is pushed to firebase
   var newPosition = snapshot.val();
-  L.marker(newPosition.latLng, {icon: daveIcon}).addTo(map); //adds that icon to the map
+  console.log(snapshot);
+  var marker = L.marker(newPosition.latLng, {icon: daveIcon}); //adds that icon to the map
+  map.addLayer(marker)
+});
+
+firebase.on("child_removed", function(oldChildSnapshot){
+	console.log(oldChildSnapshot.val());
+	var deleteMarker = snapshot.val().latLng;
+
+	map.eachLayer(function (layer) {
+		var layerLng = layer._latlng;
+	   if(layerLng.lat == deleteMarker.lat && layerLng.lng == deleteMarker.lng){
+	   		map.removeLayer(layer);
+	   }
+	});
 });

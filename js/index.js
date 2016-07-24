@@ -69,15 +69,27 @@ var imageURL = './OSLMAP_burned.png',
 L.imageOverlay(imageURL,imageBounds).addTo(map);
 
 // medical tent markers added to the map
-L.marker([37.76964190906794, -122.48454988002779], {icon: medicalIcon}).addTo(map).bindPopup("Medical Tent");
-L.marker([37.768429126623694, -122.48832643032074], {icon: medicalIcon}).addTo(map).bindPopup("Medical Tent");
-L.marker([37.76843336715642, -122.49416828155519], {icon: medicalIcon}).addTo(map).bindPopup("Medical Tent");
-L.marker([37.766665043925734, -122.49277353286745], {icon:medicalIcon}).addTo(map).bindPopup("Medical Tent");
+var med_tent = L.marker([37.76964190906794, -122.48454988002779], {icon: medicalIcon}).bindPopup("Medical Tent"),
+	med_tent1 = L.marker([37.768429126623694, -122.48832643032074], {icon: medicalIcon}).bindPopup("Medical Tent"),
+	med_tent2 = L.marker([37.76843336715642, -122.49416828155519], {icon: medicalIcon}).bindPopup("Medical Tent"),
+	med_tent3 = L.marker([37.766665043925734, -122.49277353286745], {icon:medicalIcon}).bindPopup("Medical Tent");
+
+var medical_tents = L.layerGroup([med_tent, med_tent1, med_tent2, med_tent3]);
+
 
 // water station markers added to the map
-L.marker([37.7677336759695, -122.49194204807283], {icon: waterIcon}).addTo(map).bindPopup("Water Station");
-L.marker([37.76897191283392, -122.49256432056428], {icon: waterIcon}).addTo(map).bindPopup("Water Station");
-L.marker([37.7696546304567, -122.48497366905214], {icon: waterIcon}).addTo(map).bindPopup("Water Station");
+var water_st = L.marker([37.7677336759695, -122.49194204807283], {icon: waterIcon}).bindPopup("Water Station"),
+	water_st1 = L.marker([37.76897191283392, -122.49256432056428], {icon: waterIcon}).bindPopup("Water Station"),
+	water_st2 = L.marker([37.7696546304567, -122.48497366905214], {icon: waterIcon}).bindPopup("Water Station");
+
+var water_stations = L.layerGroup([water_st, water_st1, water_st2]);
+
+var overlayMaps = {
+	"Medical Tents": medical_tents,
+	"Water Stations": water_stations
+};
+
+L.control.layers(null, overlayMaps).addTo(map);
 
 $('#alert-btn').click(function(){ //event for when they click the button to drop a pin to their location
 	// map.locate({setView:true}); 

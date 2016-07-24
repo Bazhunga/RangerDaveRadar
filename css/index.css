@@ -1,5 +1,19 @@
+
+#rangerButton{
+  position: fixed;
+  z-index: 2;
+  bottom: 0;
+  margin-bottom: 3vh;
+  width: 100%;
+}
 #mapid { 
 	height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 }
 
 #rdr-bar {
@@ -22,6 +36,13 @@
 
 #daves-pic, #radar-pic {
 	width: 20%;
+}
+
+#titlething {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 #alert-btn {

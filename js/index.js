@@ -1,4 +1,5 @@
 var map = L.map('mapid').setView([37.768611, -122.490113], 16);
+var currLocation;
 
 var firebase = new Firebase("https://rangerdavesradar.firebaseio.com/");
 
@@ -9,7 +10,7 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 	accessToken: 'pk.eyJ1Ijoia2RpZXUiLCJhIjoiY2lxenJld3FjMDJtdmZ4a3F3Mnh4cjd5eCJ9.mjmM-iBez9Zt2tuRoa40bg'
 }).addTo(map);
 
-map.locate({setView:true}); //locates the user's location
+map.locate({setView:true}); 
 
 var daveIcon = L.icon({
     iconUrl: 'daveicon.png',
@@ -22,13 +23,13 @@ var daveIcon = L.icon({
 function onLocationFound(e) {
 	console.log(e);
 	var radius = e.accuracy / 2;
-	console.log("Location");
+	console.log("Location on start up: ");
 	console.log(e); //prints out the locaition
- 	firebase.push({latLng: e.latlng}); //pushes to the firesbase
 	L.circle(e.latlng, radius).addTo(map); //add an initial circle to the current location of the user
+	currLocation = e;
 }
 
-map.on('locationfound', onLocationFound);
+map.on('locationfound', onLocationFound); //locates the user's location on start up
 
 function onLocationError(e) { //any errors that occur with getting the user's location
 	alert(e.message);
@@ -36,19 +37,18 @@ function onLocationError(e) { //any errors that occur with getting the user's lo
 
 map.on('locationerror', onLocationError);
 
-// function onMapClick(e) {
-// 	L.marker(e.latlng, {icon: daveIcon}).addTo(map);
-// }
-
-// map.on('click', onMapClick);
-var imageURL = './OSLMAP_burned.png',
+var imageURL = './OSLMAP_burned.png', //adds the Outside Lands map overlay
 	imageBounds = [[37.766152, -122.496683],[37.771037, -122.481465]];
-
 L.imageOverlay(imageURL,imageBounds).addTo(map);
 
-firebase.on("child_added", function(snapshot, prevChildKey) {
-  // Get latitude and longitude from the cloud.
-  var newPosition = snapshot.val();
+$('#alert-btn').click(function(){ //event for when they click the button to drop a pin to their location
+	map.locate({setView:true}); 
+    map.on('locationfound', onLocationFound); //locates the user's location on start up
+    console.log(currLocation);
+	firebase.push({latLng: currLocation.latlng}); //pushes to the firebase
+});
 
-  L.circle(newPosition.latLng, radius).addTo(map);
+firebase.on("child_added", function(snapshot, prevChildKey) { //listener when soemthing is pushed to firebase
+  var newPosition = snapshot.val();
+  L.marker(newPosition.latLng, {icon: daveIcon}).addTo(map); //adds that icon to the map
 });

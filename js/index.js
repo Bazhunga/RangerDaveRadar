@@ -19,7 +19,7 @@ var daveIcon = L.icon({
 
     iconSize:     [38, 45], // size of the icon
     iconAnchor:   [19, 40], // point of the icon which will correspond to marker's location
-    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    popupAnchor:  [-5, -22] // point from which the popup should open relative to the iconAnchor
 });
 
 var medicalIcon = L.icon({
@@ -95,6 +95,7 @@ map.on('locationerror', onLocationError);
 //Once they click alert ranger dave, a form will pop up
 $("#alert-btn").click(function(){
 	$("#med-form-container").css("display","");
+	document.getElementById("realForm").reset(); //resets the form  when alert-btn is clicked
 });
 
 //If they want to close the form by clicking the right "x" button
@@ -103,20 +104,43 @@ $("#close-form").click(function(){
 });
 
 //After filling out the form, submit button will drop the pin!
-$("#submit-btn").click(function(){//event for when they click the button to drop a pin to their location
+$("#submit-btn").click(function(e){//event for when they click the button to drop a pin to their location
 	// map.locate({setView:true}); 
  //    map.on('locationfound', onLocationFound); //locates the user's location again when clicked
  //====UNCOMMENT THE ABOVE LINES TO DROP A PIN AT OUR CURRENT LOCATION=====//
+ 	e.preventDefault(); //prevents refresh
+ 	var Option1 = $('#option1').prop('checked');
+ 	var Option2= $('#option2').prop('checked');
+ 	var Option3= $('#option3').prop('checked');
+ 	var tempDesc = $('#form-text').val();
  	$("#med-form-container").css("display","none");
  	var newLocation = generateLocation(); //generates a new location near golden gate park
  	map.setView(ggPark, 16);
-	firebase.push({latLng: newLocation, objId: 0}); //pushes to the firebase
+	firebase.push({latLng: newLocation, objId: 0, unconcious: Option1, intoxicated: Option2, injured: Option3, desc: tempDesc}); //pushes to the firebase
 });
 
 firebase.on("child_added", function(snapshot, prevChildKey) { //listener when something is pushed to firebase
 	var newPosition = snapshot.val();
 	var key = snapshot.key(); //grabs the key so we can update the id
 	var marker = L.marker(newPosition.latLng, {icon: daveIcon}); //adds that icon to the map
+	var popUp = "";
+	popUp += "<dl>";
+	if(newPosition.unconcious){
+       popUp += "<dd>Unconcious</dd>";
+	}
+	if(newPosition.intoxicated){
+		popUp += "<dd>Intoxicated</dd>";
+	}
+	if(newPosition.injured){
+		popUp += "<dd>Injured</dd>";
+	}
+	if(newPosition.desc.length != 0){ //when there is an actual description
+		popUp += "<dd>";
+		popUp += newPosition.desc;
+		popUp += "</dd>";
+	}
+	popUp += "</dl>";
+	marker.bindPopup(popUp);
 	var addLayer = map.addLayer(marker); //adds the marker to leaflet map, so now the marker has a leaflet id
 	firebase.child(key).update({objId: marker._leaflet_id}); //updates the object's ID
 });

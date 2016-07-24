@@ -1,5 +1,27 @@
 #mapid { 
-	height: 83vh;
+	height: 100vh;
+}
+
+#rdr-bar {
+	z-index: 1000;
+	background-color: rgba( 255, 255, 255, 1  );
+	position: fixed;
+    	bottom: 0;
+    	width: 100%;
+	padding-bottom: 10px;
+}
+
+#rdr-bar img {
+	height: 20%;
+	/*width: 20%;*/
+}
+
+#ranger-pic {
+	width: 23%;
+}
+
+#daves-pic, #radar-pic {
+	width: 20%;
 }
 
 #alert-btn {

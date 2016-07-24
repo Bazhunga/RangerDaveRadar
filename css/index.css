@@ -6,6 +6,7 @@
   margin-bottom: 3vh;
   width: 100%;
 }
+
 #mapid { 
 	height: 100vh;
   position: absolute;
@@ -16,28 +17,6 @@
   z-index: -1;
 }
 
-#rdr-bar {
-	z-index: 1000;
-	background-color: rgba( 255, 255, 255, 1  );
-	position: fixed;
-    	bottom: 0;
-    	width: 100%;
-	padding-bottom: 10px;
-}
-
-#rdr-bar img {
-	height: 20%;
-	/*width: 20%;*/
-}
-
-#ranger-pic {
-	width: 23%;
-}
-
-#daves-pic, #radar-pic {
-	width: 20%;
-}
-
 #titlething {
   width: 100%;
   position: relative;
@@ -46,6 +25,7 @@
 }
 
 #alert-btn {
+  font-family: 'Roboto', thin;
   display: inline-block;
   padding: 15px 25px;
   font-size: 24px;
@@ -67,4 +47,12 @@
   background-color: #ff9704;
   box-shadow: 0 5px #666;
   transform: translateY(4px);
+}
+
+#ranger-dave {
+    position: relative;
+    display: inherit;
+    z-index: -1;
+    width: 215px;
+    top: 15px;
 }

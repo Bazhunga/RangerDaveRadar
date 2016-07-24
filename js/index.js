@@ -62,9 +62,9 @@ L.control.layers(null, overlayMaps,{position:'topleft'}).addTo(map);
 
 function generateLocation(){ //generates random point within the radius of golden gate park (for testing purposes)
 	var r = 200/111300; // = 100 meters
-    var y0 = 37.769358; //lat and long of center of golden gate
+	var y0 = 37.769358; //lat and long of center of golden gate
   	var x0 = -122.48816;
-    var u = Math.random();
+	var u = Math.random();
   	var v = Math.random();
   	var w = r * Math.sqrt(u);
   	var t = 2 * Math.PI * v;
@@ -92,10 +92,22 @@ function onLocationError(e) { //any errors that occur with getting the user's lo
 
 map.on('locationerror', onLocationError);
 
-$('#alert-btn').click(function(){ //event for when they click the button to drop a pin to their location
+//Once they click alert ranger dave, a form will pop up
+$("#alert-btn").click(function(){
+	$("#med-form-container").css("display","");
+});
+
+//If they want to close the form by clicking the right "x" button
+$("#close-form").click(function(){
+	$("#med-form-container").css("display","none");
+});
+
+//After filling out the form, submit button will drop the pin!
+$("#submit-btn").click(function(){//event for when they click the button to drop a pin to their location
 	// map.locate({setView:true}); 
  //    map.on('locationfound', onLocationFound); //locates the user's location again when clicked
  //====UNCOMMENT THE ABOVE LINES TO DROP A PIN AT OUR CURRENT LOCATION=====//
+ 	$("#med-form-container").css("display","none");
  	var newLocation = generateLocation(); //generates a new location near golden gate park
  	map.setView(ggPark, 16);
 	firebase.push({latLng: newLocation, objId: 0}); //pushes to the firebase

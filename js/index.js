@@ -5,7 +5,7 @@ var ggPark = L.latLng(37.769358, -122.48816);
 var firebase = new Firebase("https://rangerdavesradar.firebaseio.com/");
 firebase.remove();
 
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+var mapBox = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
 	maxZoom: 18,
 	id: 'kdieu.0o991llo',
@@ -31,6 +31,34 @@ var waterIcon = L.icon({
 	iconUrl: 'water_drop.png',
 	iconSize:     [38, 45]
 });
+var imageURL = './OSLMAP_burned.png',
+	imageBounds = [[37.766152, -122.496683],[37.771037, -122.481465]];
+L.imageOverlay(imageURL,imageBounds).addTo(map);
+
+// medical tent markers added to the map
+var med_tent = L.marker([37.76964190906794, -122.48454988002779], {icon: medicalIcon}).bindPopup("Medical Tent"),
+	med_tent1 = L.marker([37.768429126623694, -122.48832643032074], {icon: medicalIcon}).bindPopup("Medical Tent"),
+	med_tent2 = L.marker([37.76843336715642, -122.49416828155519], {icon: medicalIcon}).bindPopup("Medical Tent"),
+	med_tent3 = L.marker([37.766665043925734, -122.49277353286745], {icon:medicalIcon}).bindPopup("Medical Tent");
+
+var medical_tents = L.layerGroup([med_tent, med_tent1, med_tent2, med_tent3]);
+medical_tents.addTo(map);
+
+
+// water station markers added to the map
+var water_st = L.marker([37.7677336759695, -122.49194204807283], {icon: waterIcon}).bindPopup("Water Station"),
+	water_st1 = L.marker([37.76897191283392, -122.49256432056428], {icon: waterIcon}).bindPopup("Water Station"),
+	water_st2 = L.marker([37.7696546304567, -122.48497366905214], {icon: waterIcon}).bindPopup("Water Station");
+
+var water_stations = L.layerGroup([water_st, water_st1, water_st2]);
+water_stations.addTo(map);
+
+var overlayMaps = {
+	"Medical Tents": medical_tents,
+	"Water Stations": water_stations
+};
+
+L.control.layers(null, overlayMaps).addTo(map);
 
 function generateLocation(){ //generates random point within the radius of golden gate park (for testing purposes)
 	var r = 200/111300; // = 100 meters
@@ -63,33 +91,6 @@ function onLocationError(e) { //any errors that occur with getting the user's lo
 }
 
 map.on('locationerror', onLocationError);
-
-var imageURL = './OSLMAP_burned.png',
-	imageBounds = [[37.766152, -122.496683],[37.771037, -122.481465]];
-L.imageOverlay(imageURL,imageBounds).addTo(map);
-
-// medical tent markers added to the map
-var med_tent = L.marker([37.76964190906794, -122.48454988002779], {icon: medicalIcon}).bindPopup("Medical Tent"),
-	med_tent1 = L.marker([37.768429126623694, -122.48832643032074], {icon: medicalIcon}).bindPopup("Medical Tent"),
-	med_tent2 = L.marker([37.76843336715642, -122.49416828155519], {icon: medicalIcon}).bindPopup("Medical Tent"),
-	med_tent3 = L.marker([37.766665043925734, -122.49277353286745], {icon:medicalIcon}).bindPopup("Medical Tent");
-
-var medical_tents = L.layerGroup([med_tent, med_tent1, med_tent2, med_tent3]);
-
-
-// water station markers added to the map
-var water_st = L.marker([37.7677336759695, -122.49194204807283], {icon: waterIcon}).bindPopup("Water Station"),
-	water_st1 = L.marker([37.76897191283392, -122.49256432056428], {icon: waterIcon}).bindPopup("Water Station"),
-	water_st2 = L.marker([37.7696546304567, -122.48497366905214], {icon: waterIcon}).bindPopup("Water Station");
-
-var water_stations = L.layerGroup([water_st, water_st1, water_st2]);
-
-var overlayMaps = {
-	"Medical Tents": medical_tents,
-	"Water Stations": water_stations
-};
-
-L.control.layers(null, overlayMaps).addTo(map);
 
 $('#alert-btn').click(function(){ //event for when they click the button to drop a pin to their location
 	// map.locate({setView:true}); 

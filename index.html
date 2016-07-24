@@ -7,6 +7,7 @@
 		<link rel="stylesheet" href="css/index.css">
 		<link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.css" />
 		<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
 		<!-- Third Party JS -->
 		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
@@ -19,11 +20,57 @@
 				<div id="mapid">
 				</div>
 			</div>
+
 			<div id="rangerButton">
 				<center>
 					<img id="ranger-dave" src = "./rangerdave.png">
 					<button class="button" id="alert-btn">Alert Ranger Dave</button>
 				</center>
+			</div>
+
+			<div id="med-form-container" style="display: none;">
+				<div id="med-form">
+					<div class="panel panel-danger">
+						<div class="panel-heading">
+							<h3 class="panel-title">Alert Form</h3> 
+							<a id="close-form"><span class="glyphicon glyphicon-remove" style="float: right; top: -15px; color: gray;"></span></a>
+						</div>
+						<div class="panel-body">
+							<fieldset class="form-group">
+								<small class="text-muted">Please fill out the following form to the best of your capabilities. Help will be on its way!</small>
+							</fieldset>
+							<ul class="list-group">
+								<li class="list-group-item">
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" id="option1" value="option1">Unconscious
+										</label>
+									</div>
+								</li>
+								<li class="list-group-item">
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" id="option2" value="option2">Intoxication
+										</label>
+									</div>
+								</li>
+								<li class="list-group-item">
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" id="option3" value="option3">Injury
+										</label>
+									</div>
+								</li>
+							</ul>
+							<fieldset class="form-group">
+	    							<label for="exampleTextarea">Additional Notes</label>
+	   							<textarea class="form-control" id="form-text" rows="3"></textarea>
+	 						</fieldset>
+
+							<button type="submit" class="btn btn-danger" id="submit-btn">Submit</button>
+						</div>
+					</div>	
+				</div>
 			</div>
 		</div>
 		 <br />
@@ -33,6 +80,7 @@
 <!-- Third Party JS Plugin -->
 <script src="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.js"></script>
 <script src="https://cdn.firebase.com/js/client/2.2.1/firebase.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
 <!-- Local JS -->
 <script src="js/index.js"></script>
